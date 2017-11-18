@@ -6,7 +6,7 @@ class Square extends React.Component {
   render() {
     return (
       <button className="square">
-        {/* TODO */}
+        {this.props.value}
       </button>
     );
   }
@@ -14,7 +14,7 @@ class Square extends React.Component {
 
 class Board extends React.Component {
   renderSquare(i) {
-    return <Square />;
+    return <Square value={i}/>;
   }
 
   render() {
@@ -66,17 +66,40 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-function tick() {
-  const element = (
-    <div>
-      <h1>Hello, world!</h1>
-      <h2>It is {new Date().toLocaleTimeString()}.</h2>
-    </div>
-  );
-  ReactDOM.render(
-    element,
-    document.getElementById('root')
-  );
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  componentDidMount() {
+    this.timerId = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, World</h1>
+        <h2>The Time now is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
 }
 
-setInterval(tick, 1000);
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('timer')
+);
